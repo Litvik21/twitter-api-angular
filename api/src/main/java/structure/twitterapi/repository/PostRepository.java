@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    @Query("SELECT p FROM posts p JOIN FETCH p.likes WHERE p.user = :user")
+    @Query("SELECT distinct p FROM posts p LEFT JOIN FETCH p.likes WHERE p.user = :user")
     List<Post> findAllByUser(@Param("user") UserAccount user);
 }
 

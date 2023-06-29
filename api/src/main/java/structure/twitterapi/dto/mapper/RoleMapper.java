@@ -8,9 +8,8 @@ import structure.twitterapi.model.Role;
 public class RoleMapper {
 
     public RoleResponseDto toDto(Role role) {
-        RoleResponseDto dto = new RoleResponseDto();
-        dto.setId(role.getId());
-        dto.setName(role.getRoleName().name());
-        return dto;
+        return new RoleResponseDto(
+                role.getId(),
+                role.getRoleName().name());
     }
 }

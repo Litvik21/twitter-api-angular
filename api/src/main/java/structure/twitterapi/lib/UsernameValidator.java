@@ -1,35 +1,28 @@
 package structure.twitterapi.lib;
 
+import lombok.AllArgsConstructor;
+import structure.twitterapi.service.UserAccountService;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import structure.twitterapi.model.UserAccount;
-import structure.twitterapi.service.UserAccountService;
-import java.util.List;
 
+@AllArgsConstructor
 public class UsernameValidator implements ConstraintValidator<ValidUsername, String> {
-    private static final String LOGIN_VALIDATION_REGEX = "^[A-Za-z]$";
     private final UserAccountService accountService;
 
-    public UsernameValidator(UserAccountService accountService) {
-        this.accountService = accountService;
-    }
-
     @Override
-    public boolean isValid(String username, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(String username, ConstraintValidatorContext context) {
         if (username == null) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("Fill the username field.")
+                    .addConstraintViolation();
             return false;
         }
-        boolean checker = true;
-        List<UserAccount> accounts = accountService.getAll();
-        if (!accounts.isEmpty()) {
-            for (UserAccount account : accounts) {
-                if (username.equals(account.getUsername())) {
-                    checker = false;
-                    break;
-                }
-            }
+        if (accountService.findByUsername(username).isPresent()) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("This username is already taken.")
+                    .addConstraintViolation();
+            return false;
         }
-        username.matches(LOGIN_VALIDATION_REGEX);
-        return username.matches(LOGIN_VALIDATION_REGEX) && checker;
+        return true;
     }
 }

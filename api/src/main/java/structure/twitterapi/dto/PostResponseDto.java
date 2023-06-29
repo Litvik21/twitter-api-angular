@@ -1,14 +1,11 @@
 package structure.twitterapi.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
-@Getter
-@Setter
-public class PostResponseDto {
-    private String imagePath;
-    private Long userId;
-    private Long likeId;
-    private LocalDate dateCreating;
+public record PostResponseDto (String imagePath,
+                               Long userId,
+                               List<Long> likeIds,
+                               LocalDateTime dateCreating) {
+
 }

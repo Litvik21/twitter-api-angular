@@ -6,7 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 import structure.twitterapi.model.Like;
 import structure.twitterapi.model.Post;
 import structure.twitterapi.model.UserAccount;
-import structure.twitterapi.repository.LikeRepository;
 import structure.twitterapi.repository.PostRepository;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,20 +13,22 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
+    private static final String POST_PATH_REPO = "api/src/main/resources/images/";
     private final PostRepository repository;
     private final UserAccountService accountService;
-    private final LikeRepository likeRepository;
+    private final LikeService likeService;
 
     public PostServiceImpl(PostRepository repository, UserAccountService accountService,
-                           LikeRepository likeRepository) {
+                           LikeService likeService) {
         this.repository = repository;
         this.accountService = accountService;
-        this.likeRepository = likeRepository;
+        this.likeService = likeService;
     }
 
     @Override
@@ -35,7 +36,7 @@ public class PostServiceImpl implements PostService {
         UserAccount user = getUser(username);
 
         String fileName = generateUniqueFileName(imageFile.getOriginalFilename());
-        String imagePath = "src/main/resources/images/" + fileName;
+        String imagePath = POST_PATH_REPO + fileName;
 
         Path targetPath = Paths.get(imagePath);
         try {
@@ -46,10 +47,11 @@ public class PostServiceImpl implements PostService {
         Post post = new Post();
         post.setUser(user);
         post.setImagePath(imagePath);
-        post.setDateCreating(LocalDate.now());
+        post.setDateCreating(LocalDateTime.now());
         return repository.save(post);
     }
 
+    @Override
     public boolean deletePost(String username, Long postId) {
         Post post = get(postId);
 
@@ -77,15 +79,16 @@ public class PostServiceImpl implements PostService {
         Post post = get(postId);
 
         List<Like> likes = post.getLikes();
-        Optional<Like> like = likes.stream().filter(l -> l.getUser().equals(user)).findFirst();
+        Optional<Like> like = likeService.findByUserAndPost(user.getId(), postId);
 
         if (like.isPresent()) {
-            likes.remove(like);
+            likes.remove(like.get());
             post.setLikes(likes);
+            likeService.delete(like.get());
         } else {
             Like newLike = new Like();
             newLike.setUser(user);
-            likes.add(likeRepository.save(newLike));
+            likes.add(likeService.save(newLike));
             post.setLikes(likes);
         }
 

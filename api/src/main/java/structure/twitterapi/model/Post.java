@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -21,8 +21,11 @@ public class Post {
     @Column(name = "image_path")
     private String imagePath;
     @OneToMany
+    @JoinTable(name = "posts_likes",
+            joinColumns = @JoinColumn(name = "posts_id"),
+            inverseJoinColumns = @JoinColumn(name = "likes_id"))
     private List<Like> likes;
     @ManyToOne
     private UserAccount user;
-    private LocalDate dateCreating;
+    private LocalDateTime dateCreating;
 }

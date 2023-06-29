@@ -28,7 +28,7 @@ public class PostController {
         return ResponseEntity.ok("Image uploaded successfully");
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/remove/{id}")
     public ResponseEntity<String> deletePost(@PathVariable("id") Long postId,
                                              Authentication auth) {
         postService.deletePost(auth.getName(), postId);

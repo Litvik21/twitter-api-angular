@@ -1,0 +1,63 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f8fa;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #1da1f2;
+  color: #fff;
+  padding: 16px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-container img {
+  height: 24px;
+}
+
+h1 {
+  font-size: 24px;
+  text-align: center;
+  margin: 0;
+}
+
+.btn-container {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn.register {
+  background-color: #1da1f2;
+}
+
+.btn.login {
+  background-color: #1c9cea;
+}
+
+.btn:hover {
+  background-color: rgba(29, 161, 242, 0.8);
+}
