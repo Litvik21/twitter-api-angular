@@ -1,0 +1,42 @@
+<main>
+  <div class="search-container">
+    <input type="text" [(ngModel)]="searchTerm" placeholder="Search by username" class="search-input">
+    <a class="btn search-btn" (click)="searchByUsername()">Search</a>
+    <a class="btn clear-searching" (click)="clearSearching()">Back
+      <span class="back-icon"></span></a>
+  </div>
+  <div class="post" *ngFor="let post of posts">
+    <div class="post-owner" *ngIf="post.user">{{ post.user.username }}</div>
+    <div class="post-content">
+      <p class="post-container">
+        <img src="{{ post.imagePath }}" alt="Image">
+      </p>
+    </div>
+    <div class="post-details">
+      <div class="like-container">
+        <a class="btn like" (click)="toggleLike(post.id)" [class.active]="isLiked">
+          <span class="like-icon"></span>
+        </a>
+        <span class="likes" *ngIf="post.likes">
+          <div class="liked-users">
+            <ng-container *ngIf="post.likes.length === 1">
+              <span class="liked-username">{{ post.likes[0].user.username }}</span>
+            </ng-container>
+            <ng-container *ngIf="post.likes.length === 2">
+              <span class="liked-username">{{ post.likes[0].user.username }}, </span>
+              <span class="liked-username">{{ post.likes[1].user.username }}</span>
+            </ng-container>
+            <ng-container *ngIf="post.likes.length > 2">
+              <span class="liked-username">{{ post.likes[0].user.username }}, </span>
+              <span class="liked-username">{{ post.likes[1].user.username }}</span>
+              <span class="more-likes">and {{ post.likes.length - 2 }} more</span>
+            </ng-container>
+          </div>
+        </span>
+      </div>
+      <span class="date">{{ post.dateCreating | date }}</span>
+    </div>
+  </div>
+</main>
+
+

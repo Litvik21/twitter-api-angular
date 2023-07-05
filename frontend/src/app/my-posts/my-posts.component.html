@@ -1,0 +1,14 @@
+<main>
+  <div class="post" *ngFor="let post of posts">
+    <div class="post-content">
+      <p class = post-container>
+        <img src="{{ post.imagePath }}" alt="Image">
+      </p>
+    </div>
+    <div class="post-details">
+      <span class="likes" *ngIf="post.likes">{{ post.likes.length }} likes</span>
+      <span class="date">{{ post.dateCreating | date }}</span>
+      <button class="delete-button" (click)="deletePost(post.id)">Remove</button>
+    </div>
+  </div>
+</main>
