@@ -15,4 +15,6 @@ public interface UserAccountService {
     UserAccount get(Long id);
 
     Optional<UserAccount> findByUsername(String username);
+
+    Long getIdByUsername(String username);
 }

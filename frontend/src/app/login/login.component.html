@@ -8,11 +8,21 @@
       </p>
       <p>
         <label>Password:</label>
-        <input name="password" [(ngModel)]="password">
+        <input type="password" name="password" [(ngModel)]="password">
       </p>
     </form>
     <div class="btn-container">
       <button class="btn login" (click)="login()">Sign In</button>
+    </div>
+    <div *ngIf="loginErrors.length > 0" class="error-container">
+      <p>Произошла ошибка при входе:</p>
+      <ul>
+        <li *ngFor="let error of loginErrors">{{ error }}</li>
+      </ul>
+    </div>
+
+    <div *ngIf="generalError !== ''" class="general-error">
+      <p>{{ generalError }}</p>
     </div>
   </div>
 </div>

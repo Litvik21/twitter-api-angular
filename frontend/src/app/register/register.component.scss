@@ -62,3 +62,31 @@ input {
 .btn:hover {
   background-color: rgba(29, 161, 242, 0.8);
 }
+
+.error-container {
+  color: brown;
+  margin-bottom: 16px;
+}
+
+.error-container p {
+  color: brown;
+  font-weight: bold;
+}
+
+.error-container ul {
+  color: brown;
+  list-style: disc;
+  padding-left: 20px;
+}
+
+.error-container li {
+  color: brown;
+  margin-bottom: 8px;
+}
+
+.general-error {
+  color: brown;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+

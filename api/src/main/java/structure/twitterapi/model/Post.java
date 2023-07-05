@@ -20,10 +20,7 @@ public class Post {
     private Long id;
     @Column(name = "image_path")
     private String imagePath;
-    @OneToMany
-    @JoinTable(name = "posts_likes",
-            joinColumns = @JoinColumn(name = "posts_id"),
-            inverseJoinColumns = @JoinColumn(name = "likes_id"))
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Like> likes;
     @ManyToOne
     private UserAccount user;

@@ -1,7 +1,8 @@
 package structure.twitterapi.service;
 
 import structure.twitterapi.model.Like;
-
+import structure.twitterapi.model.Post;
+import structure.twitterapi.model.UserAccount;
 import java.util.Optional;
 
 public interface LikeService {
@@ -9,5 +10,7 @@ public interface LikeService {
 
     void delete(Like like);
 
-    Optional<Like> findByUserAndPost(Long userId, Long postId);
+    Like get(Long id);
+
+    Optional<Like> findByUserAndPost(UserAccount user, Post post);
 }

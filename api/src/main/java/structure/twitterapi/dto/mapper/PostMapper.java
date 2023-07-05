@@ -10,6 +10,7 @@ public class PostMapper {
 
     public PostResponseDto toDto(Post post) {
         return new PostResponseDto(
+                post.getId(),
                 post.getImagePath(),
                 post.getUser().getId(),
                 post.getLikes().stream().map(Like::getId).toList(),

@@ -18,4 +18,7 @@ public class Like {
     private Long id;
     @ManyToOne
     private UserAccount user;
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 }

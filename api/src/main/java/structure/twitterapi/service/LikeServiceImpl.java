@@ -1,18 +1,17 @@
 package structure.twitterapi.service;
 
-import org.springframework.stereotype.Repository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import structure.twitterapi.model.Like;
+import structure.twitterapi.model.Post;
+import structure.twitterapi.model.UserAccount;
 import structure.twitterapi.repository.LikeRepository;
-
 import java.util.Optional;
 
-@Repository
+@AllArgsConstructor
+@Service
 public class LikeServiceImpl implements LikeService {
     private final LikeRepository repository;
-
-    public LikeServiceImpl(LikeRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public Like save(Like like) {
@@ -25,7 +24,13 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public Optional<Like> findByUserAndPost(Long userId, Long postId) {
-        return repository.findLikeByPostAndUser(userId, postId);
+    public Like get(Long id) {
+        return repository.findById(id).orElseThrow(() ->
+                new RuntimeException("Can't find like by id: " + id));
+    }
+
+    @Override
+    public Optional<Like> findByUserAndPost(UserAccount user, Post post) {
+        return repository.findByUserAndPost(user, post);
     }
 }

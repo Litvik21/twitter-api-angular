@@ -15,18 +15,19 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 960px;
+  max-width: 1650px;
   margin: 0 auto;
 }
 
 .logo-container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
+  margin-left: 10px;
 }
 
 .logo-container img {
-  height: 24px;
+  height: 30px;
 }
 
 h1 {
@@ -37,10 +38,20 @@ h1 {
 
 .btn-container {
   display: flex;
-  gap: 8px;
+  justify-content: flex-end;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 768px) {
+  .btn-container {
+    justify-content: flex-start;
+  }
 }
 
 .btn {
+  position: relative;
+  vertical-align: middle;
   padding: 12px 24px;
   border-radius: 4px;
   color: #fff;
@@ -48,16 +59,66 @@ h1 {
   text-align: center;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  text-decoration: none;
+  background-color: #1181c7;
+  min-width: 110px;
+  overflow: hidden;
 }
 
-.btn.register {
+.btn.active {
   background-color: #1da1f2;
 }
 
-.btn.login {
-  background-color: #1c9cea;
+.btn:hover {
+  color: #030f52;
+  background-color: rgba(29, 161, 242, 0.8);
 }
 
-.btn:hover {
-  background-color: rgba(29, 161, 242, 0.8);
+.btn::before,
+.btn::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 31px;
+  height: 31px;
+}
+
+.btn.addPost::before {
+  width: 27px;
+  height: 27px;
+  background-image: url('../assets/InactiveNew.png');
+}
+
+.btn.addPost.active::before {
+  background-image: url('../assets/ActiveNew.png');
+}
+
+.btn.myPosts::before {
+  background-image: url('../assets/InactiveProfile.png');
+}
+
+.btn.myPosts.active::before {
+  background-image: url('../assets/ActiveProfile.png');
+}
+
+.btn.home::before {
+  width: 33px;
+  height: 26px;
+  background-image: url('../assets/InactiveHome.png');
+}
+
+.btn.home.active::before {
+  background-image: url('../assets/ActiveHome.png');
+}
+
+.btn.logout::before {
+  width: 29.6px;
+  height: 27px;
+  background-image: url('../assets/LogoutIcon.png');
+}
+
+.btn.logout.active::before {
+  background-image: url('../assets/LogoutIcon.png');
 }

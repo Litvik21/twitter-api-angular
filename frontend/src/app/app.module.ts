@@ -12,12 +12,20 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { APP_DATE_FORMATS, AppDateAdapter } from './adapter/date.adapter';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { MainComponent } from './main/main.component';
+import { AddPostComponent } from './add-post/add-post.component';
+import { MyPostsComponent } from './my-posts/my-posts.component';
+import { PostsByUserComponent } from './posts-by-user/posts-by-user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    MainComponent,
+    AddPostComponent,
+    MyPostsComponent,
+    PostsByUserComponent
   ],
   imports: [
     BrowserModule,

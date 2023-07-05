@@ -20,7 +20,6 @@ export class PostService {
 
     if (token) {
       return new HttpHeaders({
-        'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       });
     }
@@ -28,24 +27,43 @@ export class PostService {
     return new HttpHeaders();
   }
 
-  addPost(post: Post): Observable<Post> {
+  addPost(formData: FormData): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.post<Post>(this.postsUrl, post, {headers}).pipe(
-      catchError(this.handleError<Post>('addPost'))
+    headers.append('Content-Type', 'multipart/form-data');
+    return this.http.post<any>(`${this.postsUrl}/add`, formData, { headers }).pipe(
+      catchError(this.handleError<any>('addPost'))
     );
   }
 
   removePost(id: number): Observable<any> {
     const headers = this.getHeaders();
+    headers.append('Content-Type', 'application/json');
     const url = `${this.postsUrl}/remove/${id}`;
     return this.http.delete(url, {headers}).pipe(
       catchError(this.handleError<any>(`removePost id=${id}`))
     );
   }
 
-  getPostsOfUser(id: number): Observable<Post[]> {
+  getPosts(): Observable<Post[]> {
     const headers = this.getHeaders();
-    const url = `${this.postsUrl}/all/${id}`;
+    headers.append('Content-Type', 'application/json');
+    return this.http.get<Post[]>(this.postsUrl, {headers}).pipe(
+      catchError(this.handleError<Post[]>('getPosts', []))
+    );
+  }
+
+  getPostOfCurrentUser(): Observable<Post[]> {
+    const headers = this.getHeaders();
+    headers.append('Content-Type', 'application/json');
+    return this.http.get<Post[]>(`${this.postsUrl}/my`, {headers}).pipe(
+      catchError(this.handleError<Post[]>('getPosts', []))
+    );
+  }
+
+  getPostsOfUser(username: string): Observable<Post[]> {
+    const headers = this.getHeaders();
+    headers.append('Content-Type', 'application/json');
+    const url = `${this.postsUrl}/username?username=${username}`;
     return this.http.get<Post[]>(url, {headers}).pipe(
         catchError(this.handleError<Post[]>('getPosts', []))
       );
@@ -53,6 +71,7 @@ export class PostService {
 
   addOrRemoveLike(id: number): Observable<Post> {
     const headers = this.getHeaders();
+    headers.append('Content-Type', 'application/json');
     const url = `${this.postsUrl}/like/${id}`;
     return this.http.get<Post>(url, {headers}).pipe(
       catchError(this.handleError<Post>(`addOrRemoveLike id=${id}`))

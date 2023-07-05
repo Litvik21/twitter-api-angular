@@ -8,16 +8,27 @@
       </p>
       <p>
         <label>Password:</label>
-        <input name="password" [(ngModel)]="password">
+        <input type="password" name="password" [(ngModel)]="password">
       </p>
       <p>
         <label>Confirm Password:</label>
-        <input name="repeatPassword" [(ngModel)]="repeatPassword">
+        <input type="password" name="repeatPassword" [(ngModel)]="repeatPassword">
       </p>
     </form>
     <div class="btn-container">
       <button class="btn register" (click)="register()">Sign Up</button>
     </div>
+    <div *ngIf="registrationErrors.length > 0" class="error-container">
+      <p>An error occurred while registering:</p>
+      <ul>
+        <li *ngFor="let error of registrationErrors">{{ error }}</li>
+      </ul>
+    </div>
+
+    <div *ngIf="generalError !== ''" class="general-error">
+      <p>{{ generalError }}</p>
+    </div>
+
   </div>
 </div>
 

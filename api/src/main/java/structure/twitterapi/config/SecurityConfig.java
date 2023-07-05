@@ -35,14 +35,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().disable().csrf().disable().cors().configurationSource(corsConfigurationSource())
+        http.httpBasic().disable().csrf().disable()
+                .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/login", "/register").permitAll()
-                .antMatchers("/posts/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/test").permitAll()
+                .antMatchers("/posts/**").authenticated()
+                .antMatchers("/users/**").authenticated()
+                .antMatchers("/likes/**").authenticated()
                 .anyRequest()
                 .authenticated().and()
                 .apply(new JwtConfigurer(provider)).and()

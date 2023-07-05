@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../service/auth.service';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -7,12 +9,15 @@ import { AuthService } from '../service/auth.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+  registrationErrors: string[] = [];
+  generalError: string = '';
   username = '';
   password = '';
   repeatPassword = '';
   newUser: any;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+              private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -23,14 +28,21 @@ export class RegisterComponent implements OnInit {
       password: this.password,
       repeatPassword: this.repeatPassword,
     };
-    this.authService.register(this.newUser);
-    this.resetForm();
+    this.authService.registerWithSubscription(this.newUser).subscribe(
+      user => {
+        console.log(user);
+        this.router.navigate(['/login']);
+      },
+      (error: HttpErrorResponse) => {
+        if (error.status === 400 && error.error && error.error.errors) {
+          this.registrationErrors = error.error.errors;
+        } else {
+          this.generalError = 'An error occurred while registering.';
+          console.error('An error occurred while registering.', error);
+        }
+      }
+    );
   }
 
-  resetForm(): void {
-    this.username = "";
-    this.password = "";
-    this.repeatPassword = '';
-  }
 
 }

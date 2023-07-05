@@ -8,6 +8,6 @@ databaseChangeLog:
   - include:
       file: /db/changelog/changes/initial-roles.sql
   - include:
-      file: /db/changelog/changes/create-table-like.sql
-  - include:
       file: /db/changelog/changes/create-table-posts.sql
+  - include:
+      file: /db/changelog/changes/create-table-like.sql

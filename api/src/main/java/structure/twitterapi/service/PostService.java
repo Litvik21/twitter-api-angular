@@ -14,4 +14,6 @@ public interface PostService {
     Post addLike(String username, Long postId);
 
     Post get(Long postId);
+
+    List<Post> findAll();
 }

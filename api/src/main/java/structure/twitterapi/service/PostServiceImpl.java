@@ -19,7 +19,8 @@ import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
-    private static final String POST_PATH_REPO = "api/src/main/resources/images/";
+    private static final String POST_PATH_REPO = "frontend/src/assets/images/";
+    private static final String PATH_FOR_ANGULAR = "../assets/images/";
     private final PostRepository repository;
     private final UserAccountService accountService;
     private final LikeService likeService;
@@ -46,7 +47,7 @@ public class PostServiceImpl implements PostService {
         }
         Post post = new Post();
         post.setUser(user);
-        post.setImagePath(imagePath);
+        post.setImagePath(PATH_FOR_ANGULAR + fileName);
         post.setDateCreating(LocalDateTime.now());
         return repository.save(post);
     }
@@ -79,7 +80,7 @@ public class PostServiceImpl implements PostService {
         Post post = get(postId);
 
         List<Like> likes = post.getLikes();
-        Optional<Like> like = likeService.findByUserAndPost(user.getId(), postId);
+        Optional<Like> like = likeService.findByUserAndPost(user, post);
 
         if (like.isPresent()) {
             likes.remove(like.get());
@@ -88,6 +89,7 @@ public class PostServiceImpl implements PostService {
         } else {
             Like newLike = new Like();
             newLike.setUser(user);
+            newLike.setPost(post);
             likes.add(likeService.save(newLike));
             post.setLikes(likes);
         }
@@ -99,6 +101,11 @@ public class PostServiceImpl implements PostService {
     public Post get(Long postId) {
         return repository.findById(postId).orElseThrow(() ->
                 new RuntimeException("Can't find post by id: " + postId));
+    }
+
+    @Override
+    public List<Post> findAll() {
+        return repository.findAll();
     }
 
     private UserAccount getUser(String username) {

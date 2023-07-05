@@ -46,6 +46,8 @@ public class AuthenticationController {
         String token = provider.createToken(account.getUsername(), account.getRole().stream()
                 .map(r -> r.getRoleName().name())
                 .collect(Collectors.toList()));
-        return new ResponseEntity<>(Map.of("token", token), HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("token", token,
+                "id", account.getId(), "username", account.getUsername()), HttpStatus.OK);
+
     }
 }

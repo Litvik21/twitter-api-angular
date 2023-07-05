@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { UserAccount } from '../model/userAccount';
 import { TokenService } from './token.service';
+import { Router } from '@angular/router';
+import { UserService } from './user.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -12,27 +12,44 @@ export class AuthService {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
   private authUrl = environment.urlPath;
+  public isLoggedInSubject = new BehaviorSubject<boolean>(false);
+  isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
   constructor(
     private http: HttpClient,
-    private tokenService: TokenService) {
+    private tokenService: TokenService,
+    private userService: UserService,
+    private router: Router) {
   }
 
-  register(user: any): Observable<UserAccount> {
+  registerWithSubscription(user: any): Observable<any> {
     const url = `${this.authUrl}/register`;
-    return this.http.post<UserAccount>(url, user, this.httpOptions).pipe(
-      catchError(this.handleError<UserAccount>('register'))
-    );
+    return this.http.post<any>(url, user, this.httpOptions);
   }
 
-  login(user: UserAccount): void {
+  login(user: any): Observable<any> {
     const url = `${this.authUrl}/login`;
-    this.http.post<any>(url, user, this.httpOptions).subscribe(
-      response => {
-        const token = response.token;
-        this.tokenService.saveToken(token);
-      }
-    )
+    return this.http.post<any>(url, user, this.httpOptions);
+  }
+
+  // login(user: any): void {
+  //   const url = `${this.authUrl}/login`;
+  //   this.http.post<any>(url, user, this.httpOptions).subscribe(
+  //     response => {
+  //       const token = response.token;
+  //       this.tokenService.setCurrentUser({ id: response.id, username: response.username });
+  //       this.tokenService.saveToken(token);
+  //       this.isLoggedInSubject.next(true);
+  //       this.router.navigate(['/main']);
+  //     }
+  //   )
+  //
+  // }
+
+  logout(): void {
+    this.tokenService.removeToken();
+    this.isLoggedInSubject.next(false);
+    this.router.navigate(['/login']);
   }
 
 
