@@ -10,8 +10,8 @@
       <h1>Twitter Simulator</h1>
     </div>
     <div class="btn-container">
-      <a class="btn login" routerLink="/register" [class.active]="isCurrentTab('/register')" *ngIf="!isLoggedIn">Sign Up</a>
-      <a class="btn login" routerLink="/login" [class.active]="isCurrentTab('/login')" *ngIf="!isLoggedIn">Sign In</a>
+      <a class="btn signup" routerLink="/register" [class.active]="isCurrentTab('/register')" *ngIf="!isLoggedIn">Sign Up</a>
+      <a class="btn signin" routerLink="/login" [class.active]="isCurrentTab('/login')" *ngIf="!isLoggedIn">Sign In</a>
       <a class="btn home" routerLink="/main" [class.active]="isCurrentTab('/main')" *ngIf="isLoggedIn">Home</a>
       <a class="btn myPosts" routerLink="/myPosts" [class.active]="isCurrentTab('/myPosts')" *ngIf="isLoggedIn">Profile</a>
       <a class="btn addPost" routerLink="/addPost" [class.active]="isCurrentTab('/addPost')" *ngIf="isLoggedIn">New Post</a>

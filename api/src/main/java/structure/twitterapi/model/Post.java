@@ -24,5 +24,6 @@ public class Post {
     private List<Like> likes;
     @ManyToOne
     private UserAccount user;
+    private String description;
     private LocalDateTime dateCreating;
 }

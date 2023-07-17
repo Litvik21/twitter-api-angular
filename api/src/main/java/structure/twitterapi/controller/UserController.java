@@ -1,5 +1,6 @@
 package structure.twitterapi.controller;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import structure.twitterapi.dto.UserResponseDto;
@@ -15,11 +16,13 @@ public class UserController {
     private final UserAccountMapper mapper;
 
     @GetMapping("/{id}")
+    @ApiOperation(value = "Get user by id")
     public UserResponseDto getById(@PathVariable(name = "id") Long id) {
         return mapper.toDto(service.get(id));
     }
 
     @GetMapping("/username")
+    @ApiOperation(value = "Get user by username")
     public UserResponseDto getByUsername(@RequestParam(name = "username") String username) {
         UserAccount user = service.findByUsername(username).orElseThrow(()
                 -> new RuntimeException("Can't find user by username: " + username));

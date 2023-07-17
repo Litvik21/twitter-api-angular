@@ -29,11 +29,19 @@ export class PostService {
 
   addPost(formData: FormData): Observable<any> {
     const headers = this.getHeaders();
-    headers.append('Content-Type', 'multipart/form-data');
+    headers.set('Content-Type', 'multipart/form-data');
     return this.http.post<any>(`${this.postsUrl}/add`, formData, { headers }).pipe(
       catchError(this.handleError<any>('addPost'))
     );
   }
+
+  // addPost(formData: FormData): Observable<any> {
+  //   const headers = this.getHeaders();
+  //   headers.append('Content-Type', 'multipart/form-data');
+  //   return this.http.post<any>(`${this.postsUrl}/add`, formData, { headers }).pipe(
+  //     catchError(this.handleError<any>('addPost'))
+  //   );
+  // }
 
   removePost(id: number): Observable<any> {
     const headers = this.getHeaders();

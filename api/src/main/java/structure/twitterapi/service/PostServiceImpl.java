@@ -1,52 +1,40 @@
 package structure.twitterapi.service;
 
-import static structure.twitterapi.lib.FileUtil.generateUniqueFileName;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import structure.twitterapi.lib.FileUtil;
 import structure.twitterapi.model.Like;
 import structure.twitterapi.model.Post;
 import structure.twitterapi.model.UserAccount;
 import structure.twitterapi.repository.PostRepository;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class PostServiceImpl implements PostService {
     private static final String POST_PATH_REPO = "frontend/src/assets/images/";
     private static final String PATH_FOR_ANGULAR = "../assets/images/";
     private final PostRepository repository;
     private final UserAccountService accountService;
     private final LikeService likeService;
-
-    public PostServiceImpl(PostRepository repository, UserAccountService accountService,
-                           LikeService likeService) {
-        this.repository = repository;
-        this.accountService = accountService;
-        this.likeService = likeService;
-    }
+    private final FileUtil fileUtil;
 
     @Override
-    public Post addPost(String username, MultipartFile imageFile) {
-        UserAccount user = getUser(username);
+    public Post addPost(String username, String description, MultipartFile imageFile) {
+        UserAccount user = accountService.findByUsername(username).orElseThrow(() ->
+                new RuntimeException("Can't find user with username: " + username));
 
-        String fileName = generateUniqueFileName(imageFile.getOriginalFilename());
+        String fileName = fileUtil.generateUniqueFileName(imageFile.getOriginalFilename());
         String imagePath = POST_PATH_REPO + fileName;
 
-        Path targetPath = Paths.get(imagePath);
-        try {
-            Files.copy(imageFile.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        fileUtil.saveImage(imageFile, imagePath);
+
         Post post = new Post();
         post.setUser(user);
+        post.setDescription(description);
         post.setImagePath(PATH_FOR_ANGULAR + fileName);
         post.setDateCreating(LocalDateTime.now());
         return repository.save(post);
@@ -57,15 +45,11 @@ public class PostServiceImpl implements PostService {
         Post post = get(postId);
 
         if (username.equals(post.getUser().getUsername())) {
-            try {
-                Files.deleteIfExists(Paths.get(post.getImagePath()));
-            } catch (IOException e) {
-                throw new RuntimeException("Can't delete image by path: " + post.getImagePath());
-            }
+            fileUtil.deleteImage(post.getImagePath());
             repository.delete(post);
             return true;
         }
-        throw  new RuntimeException("You can't delete someone else's post!");
+        throw new RuntimeException("You can't delete someone else's post!");
     }
 
     @Override
@@ -76,7 +60,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post addLike(String username, Long postId) {
-        UserAccount user = getUser(username);
+        UserAccount user = accountService.findByUsername(username).orElseThrow(() ->
+                new RuntimeException("Can't find user with username: " + username));
         Post post = get(postId);
 
         List<Like> likes = post.getLikes();
@@ -108,8 +93,4 @@ public class PostServiceImpl implements PostService {
         return repository.findAll();
     }
 
-    private UserAccount getUser(String username) {
-        return accountService.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Can't find user by username: " + username));
-    }
 }

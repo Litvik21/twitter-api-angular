@@ -5,6 +5,7 @@ export interface Post {
   id: number;
   userId: number;
   imagePath: string;
+  description: string;
   likeIds: number[];
   likes: Like[];
   user: UserAccount;

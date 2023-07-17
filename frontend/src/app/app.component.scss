@@ -122,3 +122,31 @@ h1 {
 .btn.logout.active::before {
   background-image: url('../assets/LogoutIcon.png');
 }
+
+.btn.signin::before {
+  width: 18px;
+  height: 22px;
+  left: 18px;
+  background-image: url('../assets/InactiveLOGIN.png');
+}
+
+.btn.signin.active::before {
+  width: 16px;
+  height: 20px;
+  left: 18px;
+  background-image: url('../assets/ActiveLOGIN.png');
+}
+
+.btn.signup::before {
+  width: 20px;
+  height: 18px;
+  left: 18px;
+  background-image: url('../assets/InactiveSIGNUP.png');
+}
+
+.btn.signup.active::before {
+  width: 20px;
+  height: 18px;
+  left: 18px;
+  background-image: url('../assets/ActiveSIGNUP.png');
+}

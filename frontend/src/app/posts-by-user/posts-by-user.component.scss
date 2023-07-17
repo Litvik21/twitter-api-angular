@@ -1,53 +1,95 @@
-main {
-  max-width: 960px;
-  margin: 16px auto;
+.main {
+  max-width: calc(100% - 18px);
+  margin: 0 auto;
   padding: 0 16px;
 }
 
+.center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.post-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
 .post {
+  width: calc(30% - 16px);
   background-color: #fff;
-  border-radius: 4px;
+  border-radius: 18px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 16px;
+  margin: 16px;
   padding: 16px;
+  word-break: break-word;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .post-content {
   margin-bottom: 8px;
-}
-
-.post-details {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #888;
-  font-size: 14px;
-}
-
-.likes {
-  margin-right: 16px;
-  margin-top: 6px;
-}
-
-.date {
-  font-style: italic;
+  align-items: flex-start;
 }
 
 .post-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  width: 40%;
+  max-width: 100%;
 }
 
 .post-container img {
-  height: 60px;
+  width: 100%;
+  height: auto;
+}
+
+.description {
+  flex: 1;
+  word-wrap: break-word;
+}
+
+@media (max-width: 992px) {
+  .description p {
+    font-size: 13px;
+  }
+}
+
+.description p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  margin-bottom: 8px;
+  margin-left: 18px;
+}
+
+.more-btn {
+  background-color: transparent;
+  border: none;
+  color: #888;
+  font-style: italic;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+  display: inline-block;
+  max-width: calc(100% - 16px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.more-btn:hover {
+  text-decoration: underline;
 }
 
 .search-container {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 16px;
+  margin-top: 12px;
 }
 
 .search-input {
@@ -60,7 +102,7 @@ main {
 }
 
 .search-btn {
-  padding: 8px 22px;
+  padding: 8px 16px;
   border-radius: 4px;
   color: #fff;
   font-size: 16px;
@@ -117,11 +159,13 @@ main {
   display: flex;
   align-items: flex-start;
   margin-top: 6px;
+  margin-bottom: 6px;
 }
 
 .liked-username {
   margin-right: 4px;
   margin-top: 6px;
+  margin-bottom: 6px;
 }
 
 .more-likes {
@@ -129,6 +173,20 @@ main {
   color: #888;
   margin-left: 8px;
   margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.date {
+  font-style: italic;
+}
+
+.post-details {
+  display: flex;
+  margin-top: auto;
+  justify-content: space-between;
+  align-items: center;
+  color: #888;
+  font-size: 14px;
 }
 
 .btn.clear-searching {

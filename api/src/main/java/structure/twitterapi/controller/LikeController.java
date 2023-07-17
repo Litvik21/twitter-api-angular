@@ -1,5 +1,6 @@
 package structure.twitterapi.controller;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ public class LikeController {
     private final LikeMapper mapper;
 
     @GetMapping("/{id}")
+    @ApiOperation(value = "Getting like by id")
     public LikeResponseDto getById(@PathVariable(name = "id") Long id) {
         return mapper.toDto(service.get(id));
     }

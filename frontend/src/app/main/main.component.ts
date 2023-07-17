@@ -5,6 +5,7 @@ import { UserService } from '../service/user.service';
 import { forkJoin, map, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 import { LikeService } from '../service/like.service';
+import { LikeHelperService } from '../service/likeHelper.service';
 
 @Component({
   selector: 'app-main',
@@ -15,6 +16,7 @@ export class MainComponent implements OnInit {
   searchTerm: string = '';
   posts: Post[] = [];
   isLiked: boolean = false;
+  showFullDescription: boolean = false;
 
   constructor(private postService: PostService,
               private userService: UserService,
@@ -26,11 +28,13 @@ export class MainComponent implements OnInit {
   }
 
   toggleLike(id: any) {
-    this.isLiked = !this.isLiked;
     this.postService.addOrRemoveLike(id).subscribe(post => {
-      //this.setLikesForPost(post);
       this.getPosts();
     });
+  }
+
+  toggleDescription(post: any) {
+    this.showFullDescription = !this.showFullDescription;
   }
 
   getPosts(): void {
@@ -82,7 +86,8 @@ export class MainComponent implements OnInit {
         post.likes = likes.map(like => {
           return {
             id: like.id,
-            user: like.user
+            user: like.user,
+            isLike: like.user.username === localStorage.getItem("user")
           };
         });
 

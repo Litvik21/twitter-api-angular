@@ -1,5 +1,6 @@
 package structure.twitterapi.controller;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -21,12 +22,15 @@ public class PostController {
     private final UserAccountService userService;
 
     @PostMapping("/add")
-    public ResponseEntity<Object> addPost(@RequestParam("image") MultipartFile imageFile, Authentication auth) {
-        postService.addPost(auth.getName(), imageFile);
-        return ResponseEntity.ok().body("{\"message\": \"Image uploaded successfully\"}");
+    @ApiOperation(value = "Create new post")
+    public ResponseEntity<Object> addPost(@RequestParam("image") MultipartFile imageFile,
+                                          @RequestParam("desc") String description, Authentication auth) {
+        postService.addPost(auth.getName(), description, imageFile);
+        return ResponseEntity.ok().body("{\"message\": \"Post uploaded successfully\"}");
     }
 
     @DeleteMapping("/remove/{id}")
+    @ApiOperation(value = "Remove post by id")
     public ResponseEntity<Object> deletePost(@PathVariable("id") Long postId,
                                              Authentication auth) {
         postService.deletePost(auth.getName(), postId);
@@ -34,6 +38,7 @@ public class PostController {
     }
 
     @GetMapping("/username")
+    @ApiOperation(value = "Find posts of searching user")
     public List<PostResponseDto> getAllByUser(@RequestParam(name = "username") String username) {
         return postService.findPostsByUserId(userService.getIdByUsername(username)).stream()
                 .map(postMapper::toDto)
@@ -41,6 +46,7 @@ public class PostController {
     }
 
     @GetMapping("/my")
+    @ApiOperation(value = "Find posts of current user")
     public List<PostResponseDto> getAllByCurrentUser(Authentication auth) {
         return postService.findPostsByUserId(userService.getIdByUsername(auth.getName())).stream()
                 .map(postMapper::toDto)
@@ -48,6 +54,7 @@ public class PostController {
     }
 
     @GetMapping("/like/{id}")
+    @ApiOperation(value = "Set or remove like of post")
     public PostResponseDto addOrRemoveLike(@PathVariable("id") Long postId,
                                            Authentication auth) {
         Post post = postService.addLike(auth.getName(), postId);
@@ -55,6 +62,7 @@ public class PostController {
     }
 
     @GetMapping
+    @ApiOperation(value = "Get all posts")
     public List<PostResponseDto> getAll() {
         return postService.findAll().stream()
                 .map(postMapper::toDto)

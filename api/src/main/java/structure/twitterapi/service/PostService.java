@@ -5,7 +5,7 @@ import structure.twitterapi.model.Post;
 import java.util.List;
 
 public interface PostService {
-    Post addPost(String username, MultipartFile imageFile);
+    Post addPost(String username, String description, MultipartFile imageFile);
 
     boolean deletePost(String username, Long postId);
 

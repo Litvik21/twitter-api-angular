@@ -16,6 +16,7 @@ export class PostsByUserComponent implements OnInit {
   posts: Post[] = [];
   isLiked: boolean = false;
   username = this.route.snapshot.paramMap.get('searchTerm');
+  showFullDescription: boolean = false;
   constructor(private postService: PostService,
               private userService: UserService,
               private likeService: LikeService,
@@ -31,6 +32,10 @@ export class PostsByUserComponent implements OnInit {
     this.postService.addOrRemoveLike(id).subscribe(post => {
       this.getPosts();
     });
+  }
+
+  toggleDescription(post: any) {
+    this.showFullDescription = !this.showFullDescription;
   }
 
   getPosts(): void {

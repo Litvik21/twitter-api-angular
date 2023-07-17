@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class AddPostComponent implements OnInit {
   selectedImage: File | null = null;
+  description: string = '';
 
   constructor(private postService: PostService, private router: Router) {}
 
@@ -17,12 +18,13 @@ export class AddPostComponent implements OnInit {
   }
 
   createPost(): void {
-    if (!this.selectedImage) {
+    if (!this.selectedImage || !this.description) {
       return;
     }
 
     const formData = new FormData();
     formData.append('image', this.selectedImage);
+    formData.append('desc', this.description);
 
     this.postService.addPost(formData).subscribe(
       response => {
