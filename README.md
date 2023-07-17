@@ -28,7 +28,7 @@ Add new posts, like, delete your private posts, view other people's posts by sea
 - MySQL
 - Tomcat
 - Swagger
-- Spring Web/Boot/MVC/Data
+- Spring Boot/Web/MVC/Data/Security(JWT token)
 - DOCKER
 - Angular
 
