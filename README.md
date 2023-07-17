@@ -1,5 +1,5 @@
 <div id="header" align="center">
-  <img src="twitterLogo.png" width="500" alt="Logo"/>
+  <img src="twitterLogo.png" width="3840" alt="Logo"/>
 </div>
 
 ## 📖 Description
